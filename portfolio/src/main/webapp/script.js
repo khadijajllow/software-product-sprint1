@@ -26,3 +26,20 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+function addComment() {
+    fetch("/data").then(response => response.json()).then((comments) => {
+        const commentsListElement = document.getElementById('comment-container');
+        commentsListElement.innerText = "";
+        comments.forEach((com) => {
+            commentsListElement.appendChild(createListElement(com)); });
+
+    });
+}
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
+
+

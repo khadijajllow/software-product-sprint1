@@ -6,13 +6,41 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload ="addComment()">
     <div id="content">
-      <h1>My Portfolio</h1>
+      <h1>Khadija's Portfolio</h1>
       <p>This is my portfolio.</p>
       <p>Click here to get a random message:</p>
       <button onclick="addRandomGreeting()">Hello</button>
       <div id="greeting-container"></div>
+
+    <p> Hello! My name is Khadija and I am a rising junior at Pomona College majoring in 
+          Computer Science and Africana Studies. I am originally from NY but now I go to school in California(the weather is usually amazing, but it does get cold at times).
+          I love music, especially Soul and RnB and want to learn the electric guitar. I am also a reader, I love reading all types of books and have been investing alot of time in that. </p>
+     <p> Projects </p>
+      <p> I do not have many projects but these are a few things I have worked on</p>
+     <ul> 
+         <li> Hackathon App</li>
+         <li> Social Issues in Computer Sciene Classrooms: Designed a final project for computer science intro course, pertaining to social issue. </li>
+         <li> Building Autotester for school website</li>
+     </ul>
+      <p> A favorite Photo of mine. The colors, design and such really intrigued me. </p> 
+      <img src="/images/beauty .jpg"  alt="Black Woman" style="width:200px;height:200px;">
+    <p> I love taking photos of my friends and the things around me. My friends are beautiful and taking pictures of things around helps me capture memories and feelings I have at the time. It allows me to go back to a photo and ignite forgotten memories!.
+        I also love photography in general and keep cool photos.These two pictures are some that I found intruguing.</p>
+        <img src ="/images/women playing pool.jpg" alt="pool" style=" width 250px; height:200px";>
+        <img src ="/images/Man on bike.jpg" alt ="bike" style=" width 250px; height:200px";>
+     <p> I cannot think of any special talents I have but I have several hobbies. They include bingeing 90's TV sitcoms like Living Single and A Different World! I also have a knack at finding samples for songs.</p>
+   
+     
+     <form action="/data" method="POST">
+
+      <p>Enter a comment!</p>
+      <textarea name="comment-container">Comment Here</textarea>
+      <br/><br/>
+      <input type="submit" />
+    </form>
+    <p id = "comment-container"> </p>
     </div>
   </body>
 </html>
