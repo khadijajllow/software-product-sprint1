@@ -28,8 +28,18 @@ function addRandomGreeting() {
 }
 
 function addComment() {
-    fetch("/data").then(response => response.text()).then((comment) => {
-        document.getElementById('comment-container').innerText = comment;
+    fetch("/data").then(response => response.json()).then((comments) => {
+        const commentsListElement = document.getElementById('comment-container');
+        commentsListElement.innerText = "";
+        comments.forEach((com) => {
+            commentsListElement.appendChild(createListElement(com)); });
+
     });
 }
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
+
 

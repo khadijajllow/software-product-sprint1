@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload ="addComment()">
     <div id="content">
       <h1>Khadija's Portfolio</h1>
       <p>This is my portfolio.</p>
@@ -32,8 +32,15 @@
         <img src ="/images/Man on bike.jpg" alt ="bike" style=" width 250px; height:200px";>
      <p> I cannot think of any special talents I have but I have several hobbies. They include bingeing 90's TV sitcoms like Living Single and A Different World! I also have a knack at finding samples for songs.</p>
    
-    <button onclick="addComment()">Fetch a comment!</button>
-     <p id = "comment-container"> </p>
+     
+     <form action="/data" method="POST">
+
+      <p>Enter a comment!</p>
+      <textarea name="comment-container">Comment Here</textarea>
+      <br/><br/>
+      <input type="submit" />
+    </form>
+    <p id = "comment-container"> </p>
     </div>
   </body>
 </html>
