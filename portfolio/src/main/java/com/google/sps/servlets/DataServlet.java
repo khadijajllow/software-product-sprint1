@@ -13,6 +13,9 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -52,16 +55,15 @@ public class DataServlet extends HttpServlet {
   }
 
 
-//   private String convertToJson(ArrayList<String> comments){
-//     Gson gson = new Gson();
-//     String json = gson.toJson(comments);
-//     return json;
-//   }
-
-
-//   public void doPost 
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String comment = getComment(request);
+         Document doc =
+        Document.newBuilder().setContent(comment).setType(Document.Type.PLAIN_TEXT).build();
+    LanguageServiceClient languageService = LanguageServiceClient.create();
+    Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+    float score = sentiment.getScore();
+    languageService.close();
+    System.out.println(score);
     long timestamp = System.currentTimeMillis();
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("comment", comment);
