@@ -13,6 +13,15 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
@@ -25,27 +34,43 @@ import com.google.gson.Gson;
 @WebServlet("/data")
 
 public class DataServlet extends HttpServlet {
-    ArrayList<String> comments = new ArrayList<String>();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String json = convertToJson(comments);
-    response.setContentType("text/html;");
-    response.getWriter().println(json);
-  }
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
 
-  private String convertToJson(ArrayList<String> comments){
+    ArrayList<String> comments = new ArrayList<String>();
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String title = (String) entity.getProperty("comment");
+      long timestamp = (long) entity.getProperty("timestamp");
+      String comment = title;
+      comments.add(comment);
+  }
     Gson gson = new Gson();
-    String json = gson.toJson(comments);
-    return json;
+    response.setContentType("application/json;");
+    response.getWriter().println(gson.toJson(comments));
   }
 
 
-//   public void doPost 
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String comment = getComment(request);
+         Document doc =
+        Document.newBuilder().setContent(comment).setType(Document.Type.PLAIN_TEXT).build();
+    LanguageServiceClient languageService = LanguageServiceClient.create();
+    Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+    float score = sentiment.getScore();
+    languageService.close();
+    System.out.println(score);
+    long timestamp = System.currentTimeMillis();
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("comment", comment);
+    commentEntity.setProperty("timestamp", timestamp);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
     response.setContentType("text/html");
-    comments.add(comment);
-
     response.sendRedirect("/index.html");
   }
 
