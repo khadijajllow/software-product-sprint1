@@ -31,10 +31,14 @@ function addComment() {
     fetch("/data").then(response => response.json()).then((comments) => {
         const commentsListElement = document.getElementById('comment-container');
         commentsListElement.innerText = "";
-        comments.forEach((com) => {
-            commentsListElement.appendChild(createListElement(com)); });
+        console.log(comments); 
+        Object.entries(comments).map(([comment, score]) => {
+            commentsListElement.appendChild(createListElement(comment + "Sentiment score" + ": " +  score));
+                });
+    //     comments.forEach((com, score) => {
+    //         commentsListElement.appendChild(createListElement(createButtton(com, score))); });
 
-    });
+     });
 }
 function createListElement(text) {
   const liElement = document.createElement('li');
@@ -42,4 +46,15 @@ function createListElement(text) {
   return liElement;
 }
 
+// function createButtton(com, score) {
+//     const button = document.createElement("button")
+//     button.name = "Click to get Sentiment Score";
+//     button.innerText = com;
+//     button.onclick.innerText = com + ": " + "Your Sentiment Score is " + score;
+//     return button;
+// }
 
+// function commentSentiment (com, score) {
+//      = com + ":" + "Your Sentiment Score it" + score; 
+    
+// }
