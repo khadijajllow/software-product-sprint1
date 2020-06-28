@@ -46,6 +46,7 @@ public class DataServlet extends HttpServlet {
       long id = entity.getKey().getId();
       String title = (String) entity.getProperty("comment");
       long timestamp = (long) entity.getProperty("timestamp");
+      Double score = (Double) entity.getProperty("sentiment");
       String comment = title;
       comments.add(comment);
   }
@@ -68,6 +69,7 @@ public class DataServlet extends HttpServlet {
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("comment", comment);
     commentEntity.setProperty("timestamp", timestamp);
+    commentEntity.setProperty("sentiment", score);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
     response.setContentType("text/html");
