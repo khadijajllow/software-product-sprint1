@@ -23,6 +23,7 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,14 +42,15 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    ArrayList<String> comments = new ArrayList<String>();
+    // ArrayList<String> comments = new ArrayList<String>();
+    HashMap<String, Double> comments= new HashMap<String, Double>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
       String title = (String) entity.getProperty("comment");
       long timestamp = (long) entity.getProperty("timestamp");
       Double score = (Double) entity.getProperty("sentiment");
       String comment = title;
-      comments.add(comment);
+      comments.put(comment, score);
   }
     Gson gson = new Gson();
     response.setContentType("application/json;");
